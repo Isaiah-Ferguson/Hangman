@@ -36,8 +36,8 @@ const restartBtn = document.getElementById('restartBtn');
 const inputGuess = document.getElementById("inputGuess");
 
 // Global Variables
-let wrongGuessChar = [];
-let wordToGuess = [];
+let wrongGuessChar = "";
+let wordToGuess = "";
 let displayedWord = [];
 let incorrectGuesses = 0;
 const maxIncorrectGuesses = 5;
@@ -65,14 +65,16 @@ const ApiCall = async () => {
 // Game Functions
 
 const startGame = (word) => {
-    wordToGuess = word.split("");
-    displayedWord = wordToGuess.map(() => "_");
+    wordToGuess = word
+    for (let i = 0; i < word.length; i++) {
+        displayedWord[i] = "_";
+    }
     updateGuessDisplay();
 };
 
 const resetGame = () => {
-    wrongGuessChar = [];
-    wordToGuess = [];
+    wrongGuessChar = "";
+    wordToGuess = "";
     displayedWord = [];
     incorrectGuesses = 0;
     inputGuess.value = "";
@@ -85,7 +87,7 @@ const resetGame = () => {
 
 const updateGuessDisplay = () => {
 
-    answerDiv.textContent = wordToGuess.join(" ");
+    answerDiv.textContent = wordToGuess;
     guessDiv.textContent = displayedWord.join(" ");
     hangMan.textContent = `Incorrect Guesses: ${incorrectGuesses}/${maxIncorrectGuesses}`;
 
@@ -102,8 +104,8 @@ inputGuess.addEventListener('keydown', function(event) {
                 }
             }
         } else {
-            wrongGuessChar.push(guess);
-            wrongGuessDiv.textContent = wrongGuessChar.join("");
+            wrongGuessChar += guess;
+            wrongGuessDiv.textContent = wrongGuessChar;
             incorrectGuesses++;
         }
 
@@ -117,10 +119,10 @@ inputGuess.addEventListener('keydown', function(event) {
 const gameEnd = () => {
 
     if (incorrectGuesses === maxIncorrectGuesses) {
-        alert("You lose! The word was: " + wordToGuess.join(""));
+        alert("You lose! The word was: " + wordToGuess);
         resetGame();
-    } else if (displayedWord.join("") === wordToGuess.join("")) {
-        alert("You win! You guessed the word: " + wordToGuess.join(""));
+    } else if (displayedWord.join("") === wordToGuess) {
+        alert("You win! You guessed the word: " + wordToGuess);
         resetGame();
     }
 
